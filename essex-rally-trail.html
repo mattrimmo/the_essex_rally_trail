@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Roding &amp; Bardfield Trial · A Sealed Roadbook</title>
+<meta name="theme-color" content="#1C2B24">
+<style>
+  :root{
+    --paper:#F3F0E7;--paper-2:#E8E3D5;--ink:#1C2B24;--ink-soft:#4A5A50;
+    --oxblood:#8C2B23;--map-green:#4A6B4F;--ochre:#B7862B;--rule:rgba(28,43,36,.22);
+    --serif: Iowan Old Style, Palatino Linotype, Palatino, Georgia, serif;
+    --sans: Avenir Next, Avenir, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:17px;line-height:1.62;
+       -webkit-text-size-adjust:100%;padding:0 18px calc(56px + env(safe-area-inset-bottom))}
+  .wrap{max-width:34rem;margin:0 auto}
+
+  header.top{padding:30px 0 18px;border-bottom:2px solid var(--ink)}
+  .marque{font-family:var(--sans);font-size:12px;letter-spacing:.16em;color:var(--ink-soft)}
+  h1{font-family:var(--sans);font-weight:700;font-size:clamp(27px,7.4vw,38px);line-height:1.04;letter-spacing:-.015em;margin:.28em 0 .2em}
+  header.top p{margin:.4em 0 0;color:var(--ink-soft);font-size:15.5px}
+
+  .plate{display:inline-flex;align-items:baseline;gap:10px;background:var(--ink);color:var(--paper);padding:7px 14px 8px;border-radius:3px;font-family:var(--sans)}
+  .plate b{font-size:26px;line-height:1;font-weight:700}
+  .plate span{font-size:11.5px;letter-spacing:.14em;opacity:.75}
+
+  .stage{padding:26px 0 8px}
+  .stage h2{font-family:var(--sans);font-weight:700;font-size:24px;line-height:1.14;margin:16px 0 2px;letter-spacing:-.01em}
+  .where{color:var(--ink-soft);font-size:15px;margin:.15em 0 0}
+
+  .facts{display:flex;flex-wrap:wrap;gap:0 26px;margin:14px 0 0;font-family:var(--sans);font-size:14px;color:var(--ink-soft)}
+  .facts div{padding:3px 0}
+  .facts b{display:block;color:var(--ink);font-size:15.5px;font-weight:700}
+  .facts .feet b{color:var(--oxblood)}
+
+  .leg{border-left:3px solid var(--ochre);padding:2px 0 2px 15px;margin:22px 0}
+  .leg h3{font-family:var(--sans);font-size:13.5px;letter-spacing:.06em;margin:0 0 6px;color:var(--map-green)}
+  .leg p{margin:0 0 10px}
+  .leg p:last-child{margin-bottom:0}
+  .leg .road{font-family:var(--mono);font-size:14.5px;color:var(--oxblood);display:block;margin-bottom:1px}
+
+  .orders{background:var(--paper-2);border:1px solid var(--rule);border-radius:2px;padding:18px 18px 20px;margin:22px 0 18px}
+  .orders h3{font-family:var(--sans);font-size:13.5px;letter-spacing:.06em;margin:0 0 8px;color:var(--oxblood)}
+  .orders .q{font-size:19px;line-height:1.5;margin:0}
+  .look{font-size:15.5px;color:var(--ink-soft);margin:14px 0 0}
+
+  .answer{display:flex;gap:8px;margin:18px 0 0;flex-wrap:wrap}
+  input[type=text]{flex:1 1 190px;min-width:0;font-family:var(--mono);font-size:17px;padding:13px 12px;border:2px solid var(--ink);border-radius:2px;background:#fff;color:var(--ink)}
+  input[type=text]:focus{outline:3px solid var(--ochre);outline-offset:1px}
+  button{font-family:var(--sans);font-size:15px;font-weight:600;padding:13px 20px;border-radius:2px;cursor:pointer;border:2px solid var(--ink);background:var(--ink);color:var(--paper)}
+  button:focus-visible{outline:3px solid var(--ochre);outline-offset:2px}
+  button.ghost{background:transparent;color:var(--ink)}
+  button.wide{width:100%;margin-top:6px}
+  .minor{background:none;border:none;padding:8px 0;margin:0;font-family:var(--sans);font-size:14px;font-weight:600;color:var(--oxblood);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+  .helprow{display:flex;gap:22px;flex-wrap:wrap;margin-top:6px;align-items:center}
+
+  .msg{margin:12px 0 0;font-size:16px;min-height:1.4em}
+  .msg.bad{color:var(--oxblood)}
+  .msg.good{color:var(--map-green)}
+  .hint{margin:14px 0 0;padding:12px 14px;border:1px dashed var(--rule);border-radius:2px;font-size:16px;background:rgba(183,134,43,.09)}
+  .given{margin:14px 0 0;padding:14px 16px;border:2px solid var(--oxblood);border-radius:2px;background:#fff}
+  .given h4{font-family:var(--sans);font-size:13px;letter-spacing:.06em;margin:0 0 6px;color:var(--oxblood)}
+  .given .ansbig{font-family:var(--sans);font-size:22px;font-weight:700;margin:0 0 6px}
+  .given p{margin:0;font-size:15.5px;color:var(--ink-soft)}
+
+  .log{border-top:2px solid var(--ink);margin-top:34px;padding-top:16px}
+  .log h3{font-family:var(--sans);font-size:13.5px;letter-spacing:.06em;margin:0 0 10px;color:var(--ink-soft)}
+  ol.done{list-style:none;margin:0;padding:0;font-size:15.5px}
+  ol.done li{display:flex;gap:10px;padding:5px 0;border-bottom:1px solid var(--rule)}
+  ol.done li:last-child{border-bottom:none}
+  ol.done .n{font-family:var(--mono);color:var(--ink-soft);flex:0 0 1.6em}
+  ol.done .a{margin-left:auto;font-family:var(--mono);color:var(--map-green)}
+  ol.done .a.gave{color:var(--oxblood)}
+
+  footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--rule);font-size:14px;color:var(--ink-soft)}
+  details.resume{margin-top:16px;font-size:15px;color:var(--ink-soft)}
+  details.resume summary{font-family:var(--sans);font-size:14px;font-weight:600;cursor:pointer;color:var(--oxblood)}
+  details.resume .answer{margin-top:12px}
+
+  .kit h2{font-family:var(--sans);font-size:22px;margin:0 0 4px}
+  .kit ul{margin:10px 0 0;padding-left:1.1em}
+  .kit li{margin-bottom:7px}
+  table.sched{width:100%;border-collapse:collapse;margin:14px 0 0;font-size:15px}
+  table.sched td{padding:5px 0;border-bottom:1px solid var(--rule);vertical-align:top}
+  table.sched td:first-child{font-family:var(--mono);color:var(--oxblood);width:5.4em}
+  table.sched tr:last-child td{border-bottom:none}
+
+  .trophy .big{font-family:var(--sans);font-weight:700;font-size:clamp(34px,11vw,58px);line-height:1;letter-spacing:-.02em;color:var(--oxblood);margin:18px 0 12px}
+
+  a{color:var(--oxblood)}
+  @media (prefers-reduced-motion: no-preference){
+    .stage{animation:in .28s ease-out}
+    @keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  }
+  @media print{body{padding:0;font-size:12pt} button,.answer,details.resume{display:none !important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <div class="marque">Essex · afternoon into evening · eight checkpoints</div>
+  <h1>The Roding &amp; Bardfield Trial</h1>
+  <p>A sealed roadbook. You get the roads first and the place name only once you have parked. Nothing costs a penny, nothing needs more than a few steps, and every checkpoint has a way out.</p>
+</header>
+
+<main id="app" aria-live="polite"></main>
+
+<div class="log" id="logbox" hidden>
+  <h3>Route card</h3>
+  <ol class="done" id="log"></ol>
+</div>
+
+<footer>
+  <p>Works with no signal once this page has loaded. Keep the tab open and it holds your place. If the phone reloads it, use the resume box under any checkpoint.</p>
+  <p>Postcodes are a parking guide, not a doorstep. Follow the roadbook rather than the fastest route your phone offers, otherwise it will drag you onto the A12 and ruin the whole point.</p>
+  <button class="ghost" onclick="window.print()">Print the roadbook</button>
+</footer>
+
+</div>
+
+<script>
+const KIT = {
+  headline: "Set off 12:30. Last checkpoint done by about 18:00, steak by half six if you want it.",
+  walkTotal: "Sandals throughout. Three checkpoints can be answered from the car. The rest need somewhere between five and fifty paces, all of it on road, pavement or gravel.",
+  schedule: [
+    ["12:30","Leave the house"],
+    ["12:45","Checkpoint 1, ten minutes"],
+    ["13:20","Checkpoint 2, fifteen minutes"],
+    ["13:55","Checkpoint 3, ten minutes"],
+    ["14:25","Checkpoint 4, five minutes, from the car"],
+    ["14:55","Checkpoint 5, forty five minutes, coffee and a wander"],
+    ["15:55","Checkpoint 6, forty minutes on the green"],
+    ["16:45","Checkpoint 7, fifteen minutes"],
+    ["17:40","Checkpoint 8, fifteen minutes"],
+    ["18:00","Run for dinner, or straight home through the lanes"]
+  ],
+  points: [
+    "Nothing on this route costs anything. No tickets, no museums, no honesty boxes, no car parks. Every checkpoint is on a public road or a churchyard gate.",
+    "No cash needed at any point. If you fancy a coffee or a snack, checkpoints 5 and 6 both have places that take cards, and both are a few steps from where you park.",
+    "Grass has been designed out. Checkpoint 1 is three steps onto a verge, checkpoint 3 is answered standing on the lane at a gate, and the rest are pavement, gravel or the car window.",
+    "Every checkpoint has an I give up button. It shows you the answer, tells you what you were looking at, and opens the next leg. Nothing can lock you out.",
+    "Bring something warmer than you think for the last two hours. High open ground in the evening turns quickly once the sun drops.",
+    "Fill up before you leave. There is a long middle section with no petrol stations at all.",
+    "Sunglasses for the first half, and expect low sun straight into your eyes on the run home."
+  ],
+  dinner: "Two Miller and Carters sit on the way back. Chelmsford, Barnes Mill Road CM2 6NL, is about twenty minutes from the last checkpoint. Chigwell, Manor Road, Abridge RM4 1NH, is on the last lane home and about fifteen minutes from your front door. Worth phoning ahead from checkpoint 7, since a Saturday evening walk-in is optimistic."
+};
+
+const STAGES = [
+  {
+    n: 1,
+    name: "The Green at Havering-atte-Bower",
+    postcode: "RM4 1PL",
+    dist: "4 miles", driveTime: "12 min", dwell: "10 min",
+    walk: "Three steps onto the verge",
+    drive: [
+      { road: "Main Road, then north on Havering Road", text: "Straight out of the door and north. The last mile of suburbia goes past quickly." },
+      { road: "Havering Road North, climbing", text: "The road tilts up and keeps tilting. Houses thin, then stop. You are climbing a ridge that tops out around 350 feet, about as high as this corner of the world gets." },
+      { road: "Arrive at a triangular green", text: "Over the crest the trees open and there is a green with a church on it. Pull up on the road along the south side. Before anything else, turn round and look back south. On a clear day you can pick out the Shard and the Kent hills beyond the Thames." }
+    ],
+    look: "The thing you want is right on the road edge, inside a low fence, a few feet from where you park. Wooden, weathered, with a post standing at one end of it. You can read it from the car if you pull up in the right spot.",
+    question: "How many leg holes are cut into the stocks?",
+    answers: ["4","four"],
+    hints: ["They were built to hold more than one wrongdoer at a time.","Two people, two legs each."],
+    reveal: "Four. It is a double set, so two villagers could be shamed side by side, with the whipping post shared between them.",
+    mooch: "Ten minutes is plenty. The view south from the road here is the whole reason for the stop. Then get back in, the good roads start on the next leg."
+  },
+  {
+    n: 2,
+    name: "Greensted Church",
+    postcode: "CM5 9LD",
+    dist: "11 miles", driveTime: "25 min", dwell: "15 min",
+    walk: "Forty paces of level gravel and paving",
+    drive: [
+      { road: "North on North Road, then Broxhill Road", text: "Off the green heading north, then a long descent through parkland with mature oaks either side. Prettier than it has any right to be given how close you still are to home." },
+      { road: "B175 through Stapleford Abbotts", text: "Classic Essex hedgerow road. Long gentle curves, arable either side, weatherboarded cottages. It runs past a small grass airfield, so there is a fair chance of a light aircraft crossing low over the road." },
+      { road: "Lanes to Toot Hill", text: "The road narrows properly for the first time. High banks, overhanging trees, a village green with a pub on it. The first genuinely lovely lane of the day." },
+      { road: "Greensted Road, then Church Lane", text: "West of the village the lane runs dead flat between open fields. Church Lane is an easily missed gravel track on the right with a small brown sign. Park in the gravel area by the gate." }
+    ],
+    look: "Visible in full from where you park: a very small church with black oak log walls and a shingled spire. The oak of the nave was felled roughly a thousand years ago. There is a noticeboard at the gate with the answer written on it, forty paces away on the level.",
+    question: "Which apostle, the brother of Simon Peter, is this church dedicated to?",
+    answers: ["andrew","st andrew","saint andrew"],
+    hints: ["He is the patron saint of Scotland.","His cross is the diagonal white one on the Union flag."],
+    reveal: "St Andrew. The full name is The Church of St Andrew, Greensted-juxta-Ongar, and it is the oldest wooden church in the world.",
+    mooch: "It is usually unlocked and free to walk into, on the flat the whole way. Five minutes inside is worth it just to touch a wall that was a living oak before the Norman conquest."
+  },
+  {
+    n: 3,
+    name: "Willingale",
+    postcode: "CM5 0SJ",
+    dist: "9 miles", driveTime: "20 min", dwell: "10 min",
+    walk: "None. Answered standing at the gate, or from the car window.",
+    drive: [
+      { road: "A414 briefly, then turn off for Moreton", text: "The only real A road all day and you are on it for barely two miles. Get off it the moment the Moreton sign appears." },
+      { road: "Moreton", text: "Slow right down. Ford, brick bridge, pub, and a dip in the road that is genuinely pretty. If the ford is running this is the photo stop nobody plans for, and you can take it through the window." },
+      { road: "Lanes through Bobbingworth to Fyfield", text: "Single track with passing places, wriggling north east. Hedges close in and then fall away onto big arable views. There is no fast way through here and that is entirely the point." },
+      { road: "Miller's Green to the village", text: "The last mile runs along a low ridge with the ground dropping away west into a river valley. Two church towers appear ahead standing almost on top of each other, which is how you know you have arrived. Pull up on the lane alongside the gate." }
+    ],
+    look: "From the car you can see both of them: two complete medieval churches sharing one churchyard, less than fifty yards apart. One is St Andrew's, the same dedication as your last checkpoint. The board at the gate names the other one.",
+    question: "Name the saint the other church is dedicated to. He carried a child across a river and is the patron saint of travellers.",
+    answers: ["christopher","st christopher","saint christopher"],
+    hints: ["Drivers used to keep a medal of him on the dashboard.","It starts with Chris."],
+    reveal: "St Christopher, built around 1320 alongside the older St Andrew's. Two manors, two parishes, one churchyard.",
+    mooch: "Stay in the lane and look west past the churches. The ground falls into the valley and on a clear afternoon it is the best view of the whole route, and you get it without leaving the tarmac."
+  },
+  {
+    n: 4,
+    name: "Aythorpe Roding Windmill",
+    postcode: "CM6 1PS",
+    dist: "8 miles", driveTime: "18 min", dwell: "5 min",
+    walk: "None. Seen from the car.",
+    drive: [
+      { road: "Lanes north to Leaden Roding", text: "You are entering a group of eight villages strung along one small river, all sharing the same second name. The signposts start reading like a nonsense poem and they are worth reading out loud." },
+      { road: "B184 north", text: "Wide open flowing B road with long sight lines and gentle rises. Third gear country. After the narrow lanes it feels like coming up for air." },
+      { road: "Roadside pull-in on the right", text: "A tall white timber mill appears on open ground behind a hedge on the right. There is a gateway to pull into just past it. It is privately owned, so this one is looked at from the car." }
+    ],
+    look: "The entire body of the mill turns to face the wind, balanced on one enormous upright oak timber hidden inside the brick roundhouse underneath.",
+    question: "That single upright timber gives this type of mill its name. It is the largest surviving ____ mill in Essex.",
+    answers: ["post","post mill","postmill"],
+    hints: ["The other main type turns only its cap and is called a tower mill.","Four letters. You could tie a horse to one."],
+    reveal: "A post mill, built around 1779 and the largest of its kind left in the county.",
+    mooch: "Deliberately the shortest stop of the day. Window down, look at it, move on."
+  },
+  {
+    n: 5,
+    name: "Thaxted",
+    postcode: "CM6 2PY",
+    dist: "13 miles", driveTime: "25 min", dwell: "45 min",
+    walk: "Flat pavement, as far along the street as you fancy",
+    drive: [
+      { road: "B184 north through High Roding", text: "More open flowing road along the tops of shallow valleys. Weatherboarding and the occasional thatch." },
+      { road: "Straight through Great Dunmow", text: "The one bit of actual town on the route. Do not linger, stay on the B184 north out the far side." },
+      { road: "B184 towards the hilltop town", text: "The best approach of the day. About three miles out the road lifts and the destination announces itself on the skyline: a very tall church spire, and a windmill just to the left of it, on a hill in a valley. Take the descent slowly." },
+      { road: "Park on the level street, not up by the church", text: "Ignore the parking at the top of the hill. Carry on down and park on the flat main street, which puts everything within a hundred paces on the level and saves you the climb." }
+    ],
+    look: "A hilltop wool town that never got round to growing. A fifteenth century Guildhall standing on timber legs in the middle of the street, independent shops either side. Somewhere along this street there is a blue plaque on a house.",
+    question: "The composer who lived on that street wrote one movement of The Planets here, later reworked into the hymn tune I Vow To Thee My Country. Which planet?",
+    answers: ["jupiter"],
+    hints: ["Gustav Holst. The movement is subtitled the Bringer of Jollity.","The largest planet in the solar system."],
+    reveal: "Jupiter. Holst liked the town enough that he gave the hymn tune itself the name Thaxted.",
+    mooch: "The obvious snack stop. Card friendly cafes and a bakery along the flat street. The church and the windmill are up the hill, so admire those from the bottom rather than walking up in sandals."
+  },
+  {
+    n: 6,
+    name: "Finchingfield",
+    postcode: "Finchingfield village green, CM7",
+    dist: "9 miles", driveTime: "20 min", dwell: "40 min",
+    walk: "Park beside the pond. Everything is flat and within fifty paces.",
+    drive: [
+      { road: "B1051 east, then B1053", text: "Out of the hilltop town and straight back into rolling country. The road drops, rises, drops again, big skies, almost no traffic." },
+      { road: "Great Sampford, then south east on the lanes", text: "Proper north Essex lane country. Timber framed farmhouses, deep hedges, a couple of blind bends that reward sensible speed." },
+      { road: "Final approach over the brow", text: "Save the camera for this one. You come over a hill and the whole village is laid out below in the valley: pond, sloping green, humpback bridge, church on the far rise. Park right by the water." }
+    ],
+    look: "The postcard. Duck pond, green, humpback bridge, and a windmill up on the hill at the far end of the village.",
+    question: "The corner of the village up by the windmill is named after the bird on the pond. It is called ____ End.",
+    answers: ["duck","duck end","ducks"],
+    hints: ["Look at what is swimming ten yards in front of you.","Quack."],
+    reveal: "Duck End. The mill sits at the top of it.",
+    mooch: "The longest stop of the afternoon and the one to take slowly. Sit by the pond, walk the fifty paces over the humpback bridge and back, and do nothing in particular. There is a tea room on the causeway if you want something small, and it takes cards."
+  },
+  {
+    n: 7,
+    name: "Great Bardfield",
+    postcode: "Great Bardfield High Street, CM7",
+    dist: "3 miles", driveTime: "8 min", dwell: "15 min",
+    walk: "Roll slowly down the street. Get out only if you want to.",
+    drive: [
+      { road: "B1057 south east", text: "Three miles of easy rolling road under enormous skies. Shortest leg of the day." },
+      { road: "Drive the length of the High Street", text: "One long street of timber framed and colour washed houses, every one a different height and colour. Take it at walking pace. At the far end, on the right, is the checkpoint itself, visible from the road." }
+    ],
+    look: "Halfway along the street is a square brick house where two well known English artists lived from 1925 and turned the village into an artists' colony. At the far end stands a squat old tower mill with its name on it, right by the road.",
+    question: "The tower mill shares its name with the great rock guarding the entrance to the Mediterranean. What is it called?",
+    answers: ["gibraltar","gibraltar mill"],
+    hints: ["British territory on the southern tip of Spain.","There are apes on it."],
+    reveal: "Gibraltar Mill, dating from around 1660 and probably the oldest tower mill in Essex.",
+    mooch: "Good moment to ring ahead and book a table for later, because this is the last checkpoint with a reliable phone signal."
+  },
+  {
+    n: 8,
+    name: "Pleshey",
+    postcode: "Pleshey village, CM3",
+    dist: "26 miles", driveTime: "50 min", dwell: "15 min",
+    walk: "Thirty paces on a flat lane. No climbing, no grass.",
+    drive: [
+      { road: "South west towards Great Dunmow", text: "The long evening leg and the best sustained driving of the day. Empty sweeping lanes through farmland with the sun getting low behind you." },
+      { road: "Barnston, then Great Waltham", text: "Stay off the bypasses and take the lanes through the villages. Late light on brick and thatch, and you will have most of these roads to yourselves." },
+      { road: "The signed turn, last two miles single track", text: "A small signed turning off to the right. High hedges, passing places, then it opens suddenly into the village. Park on the lane by the church." }
+    ],
+    look: "A village sitting inside the earthworks of a castle that has completely vanished. From the lane you can see a huge grassy mound rising behind the houses, a bank running right round the village, and a small brick bridge over the old moat. All of it visible without stepping off the tarmac.",
+    question: "The castle is long gone but the man made mound remains. What is the word for it, as in ____ and bailey?",
+    answers: ["motte","mott","motte and bailey"],
+    hints: ["Not the water filled kind. Two Ts and an E.","M _ T T E."],
+    reveal: "The motte. Pleshey was the seat of the Dukes of Gloucester and turns up by name in Shakespeare's Richard II.",
+    mooch: "Fifteen minutes on the flat looking up at it, then dinner. You have earned it.",
+    optional: true
+  }
+];
+
+const FINISH = {
+  question: "Last one, and there is no wrong answer. Which village would you two most like to come back to?",
+  homeward: [
+    { road: "Dinner first, if you want it", text: "Miller and Carter Chelmsford, Barnes Mill Road CM2 6NL, is about twenty minutes south of the last checkpoint. Miller and Carter Chigwell, Manor Road, Abridge RM4 1NH, is right on the lane home and fifteen minutes from your front door. Take whichever suits how hungry you are." },
+    { road: "South to Roxwell, then east on the lanes", text: "Quiet, flat, quick lanes through Highwood and Fryerning. If you have timed it right this is golden hour and you will not want to rush it." },
+    { road: "Kelvedon Hatch, Navestock, over the ridge", text: "Deep lanes with the light going, then you climb back onto the same ridge you were standing on at checkpoint one, five hours older, and drop down the hill into Romford." }
+  ]
+};
+
+let idx = 0, attempts = 0, hintLevel = 0, arrived = false, showKit = true, gaveUp = false;
+const record = [];
+const norm = s => s.toLowerCase().replace(/[^a-z0-9]/g, "");
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function render(){
+  const app = document.getElementById("app");
+  if (showKit){ renderKit(app); return; }
+  if (idx >= STAGES.length){ renderFinish(app); drawLog(); return; }
+  const s = STAGES[idx];
+  const legs = s.drive.map(d => `<p><span class="road">${esc(d.road)}</span>${esc(d.text)}</p>`).join("");
+
+  const sealed = `
+    <div class="orders">
+      <h3>Sealed orders</h3>
+      <p class="q">Drive the leg above. Once you are parked up, open your orders.</p>
+      <button class="wide" id="arrive">We are parked up</button>
+      ${s.optional ? '<button class="ghost wide" id="skiplast">Skip this one and head for dinner</button>' : ''}
+    </div>`;
+
+  const open = `
+    <div class="orders">
+      <h3>Sealed orders</h3>
+      <p class="q">${esc(s.question)}</p>
+      <p class="look">${esc(s.look)}</p>
+      <div class="answer">
+        <input type="text" id="ans" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Your answer" aria-label="Your answer">
+        <button id="go">Check in</button>
+      </div>
+      <p class="msg" id="msg"></p>
+      <div id="hintbox"></div>
+      <div class="helprow">
+        <button class="minor" id="hintbtn">Need a nudge</button>
+        <button class="minor" id="givebtn">I give up, tell me</button>
+      </div>
+    </div>
+    <div class="leg">
+      <h3>While you are here</h3>
+      <p>${esc(s.mooch)}</p>
+    </div>`;
+
+  app.innerHTML = `
+    <section class="stage">
+      <div class="plate"><b>${s.n}</b><span>OF ${STAGES.length}</span></div>
+      <h2>${arrived ? esc(s.name) : "Checkpoint " + s.n}</h2>
+      <p class="where">${arrived ? esc(s.postcode) : "Destination sealed until you arrive"}</p>
+
+      <div class="facts">
+        <div>Drive<b>${esc(s.dist)}, ${esc(s.driveTime)}</b></div>
+        <div>Stop<b>${esc(s.dwell)}</b></div>
+        <div class="feet">On foot<b>${esc(s.walk)}</b></div>
+      </div>
+
+      <div class="leg"><h3>The road</h3>${legs}</div>
+      ${arrived ? open : sealed}
+
+      <details class="resume">
+        <summary>Lost your place after a reload?</summary>
+        <p>Type the answer from the last checkpoint you completed and it will put you back where you were.</p>
+        <div class="answer">
+          <input type="text" id="resume" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Last answer" aria-label="Last answer">
+          <button class="ghost" id="resumego">Resume</button>
+        </div>
+        <p class="msg" id="resumemsg"></p>
+      </details>
+    </section>`;
+
+  if (arrived){
+    const input = document.getElementById("ans");
+    document.getElementById("go").onclick = check;
+    input.addEventListener("keydown", e => { if (e.key === "Enter") check(); });
+    document.getElementById("hintbtn").onclick = nudge;
+    document.getElementById("givebtn").onclick = giveUp;
+    input.focus({preventScroll:true});
+  } else {
+    document.getElementById("arrive").onclick = () => { arrived = true; render(); };
+    const sl = document.getElementById("skiplast");
+    if (sl) sl.onclick = () => { idx = STAGES.length; render(); window.scrollTo({top:0,behavior:"smooth"}); };
+  }
+  document.getElementById("resumego").onclick = doResume;
+  drawLog();
+}
+
+function renderKit(app){
+  app.innerHTML = `
+    <section class="stage kit">
+      <h2>Before you set off</h2>
+      <p class="where">${esc(KIT.headline)}</p>
+      <p>${esc(KIT.walkTotal)}</p>
+
+      <div class="leg">
+        <h3>Rough running order</h3>
+        <table class="sched">
+          ${KIT.schedule.map(r => `<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join("")}
+        </table>
+      </div>
+
+      <ul>${KIT.points.map(p => `<li>${esc(p)}</li>`).join("")}</ul>
+
+      <div class="leg">
+        <h3>Dinner</h3>
+        <p>${esc(KIT.dinner)}</p>
+      </div>
+
+      <div class="orders">
+        <h3>Ready</h3>
+        <p class="q">Eight checkpoints. You get the roads first and the place name only when you park. Set off from your front door.</p>
+        <button class="wide" id="begin">Open checkpoint one</button>
+      </div>
+    </section>`;
+  document.getElementById("begin").onclick = () => { showKit = false; arrived = false; render(); window.scrollTo({top:0}); };
+}
+
+function check(){
+  const s = STAGES[idx];
+  const val = document.getElementById("ans").value;
+  const msg = document.getElementById("msg");
+  if (!norm(val)){ msg.className = "msg"; msg.textContent = ""; return; }
+  if (s.answers.some(a => norm(a) === norm(val))){
+    msg.className = "msg good";
+    msg.textContent = "Correct. The next leg is opening.";
+    setTimeout(() => advance(false), 700);
+    return;
+  }
+  attempts++;
+  msg.className = "msg bad";
+  msg.textContent = attempts === 1 ? "Not that. Have another look." : "Still not it. Take a nudge, or give up, no shame in it.";
+  document.getElementById("ans").select();
+}
+
+function nudge(){
+  const s = STAGES[idx];
+  if (hintLevel >= s.hints.length) return;
+  const p = document.createElement("p");
+  p.className = "hint";
+  p.textContent = s.hints[hintLevel];
+  document.getElementById("hintbox").appendChild(p);
+  hintLevel++;
+}
+
+function giveUp(){
+  if (gaveUp) return;
+  gaveUp = true;
+  const s = STAGES[idx];
+  const box = document.createElement("div");
+  box.className = "given";
+  box.innerHTML = `<h4>The answer was</h4><p class="ansbig">${esc(s.answers[0])}</p><p>${esc(s.reveal)}</p>`;
+  document.getElementById("hintbox").appendChild(box);
+  const msg = document.getElementById("msg");
+  msg.className = "msg";
+  msg.textContent = "";
+  const bar = document.querySelector(".helprow");
+  bar.innerHTML = "";
+  const b = document.createElement("button");
+  b.textContent = "Fine. On to the next leg";
+  b.className = "wide";
+  b.onclick = () => advance(true);
+  bar.appendChild(b);
+}
+
+function advance(revealed){
+  const s = STAGES[idx];
+  record.push({ n: s.n, name: s.name, answer: s.answers[0], revealed });
+  idx++; attempts = 0; hintLevel = 0; arrived = false; gaveUp = false;
+  render(); window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function doResume(){
+  const val = document.getElementById("resume").value;
+  const msg = document.getElementById("resumemsg");
+  if (!norm(val)){ msg.textContent = ""; return; }
+  const found = STAGES.findIndex(s => s.answers.some(a => norm(a) === norm(val)));
+  if (found === -1){ msg.className = "msg bad"; msg.textContent = "That is not one of the checkpoint answers."; return; }
+  record.length = 0;
+  for (let i = 0; i <= found; i++) record.push({ n: STAGES[i].n, name: STAGES[i].name, answer: STAGES[i].answers[0], revealed:false });
+  idx = found + 1; attempts = 0; hintLevel = 0; arrived = false; gaveUp = false; showKit = false;
+  render(); window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function renderFinish(app){
+  app.innerHTML = `
+    <section class="stage trophy">
+      <div class="plate"><b>FIN</b><span>CHECKPOINTS CLEARED</span></div>
+      <div class="big">That is the lot.</div>
+      <p>You have crossed the county and come back on nothing wider than a B road, and neither of you once said the words "shall we just get the A12".</p>
+      <div class="orders">
+        <h3>Sealed orders</h3>
+        <p class="q">${esc(FINISH.question)}</p>
+        <div class="answer">
+          <input type="text" id="fin" autocomplete="off" placeholder="Village name" aria-label="Village name">
+          <button id="fingo">Log it</button>
+        </div>
+        <p class="msg" id="finmsg"></p>
+      </div>
+      <div class="leg">
+        <h3>The road home</h3>
+        ${FINISH.homeward.map(d => `<p><span class="road">${esc(d.road)}</span>${esc(d.text)}</p>`).join("")}
+      </div>
+    </section>`;
+  const go = () => {
+    const v = document.getElementById("fin").value.trim();
+    const m = document.getElementById("finmsg");
+    m.className = "msg good";
+    m.textContent = v ? v + " it is. Book the return trip." : "Book the return trip.";
+  };
+  document.getElementById("fingo").onclick = go;
+  document.getElementById("fin").addEventListener("keydown", e => { if (e.key === "Enter") go(); });
+}
+
+function drawLog(){
+  const box = document.getElementById("logbox"), list = document.getElementById("log");
+  if (!record.length){ box.hidden = true; return; }
+  box.hidden = false;
+  list.innerHTML = record.map(r =>
+    `<li><span class="n">${r.n}</span><span>${esc(r.name)}</span><span class="a${r.revealed ? " gave" : ""}">${esc(r.answer)}${r.revealed ? " (given)" : ""}</span></li>`
+  ).join("");
+}
+
+render();
+</script>
+</body>
+</html>
